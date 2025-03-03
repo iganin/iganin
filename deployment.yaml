@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-python-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-python-app
+  template:
+    metadata:
+      labels:
+        app: my-python-app
+    spec:
+      containers:
+      - name: my-python-app-container
+        image: my-python-app:latest  # Замените на ваше изображение
+        ports:
+          - containerPort: 5000  # Замените на порт, который использует ваше приложение
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: my-app-config
+                key: DATABASE_URL
+          - name: SECRET_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: my-app-config
+                key: SECRET_KEY
